@@ -4,7 +4,7 @@
       <p>{{ error }}</p>
     </div>
     <form>
-      <label for="author" class="author">Author's Name</label>
+      <label for="author" class="form-author">Author's Name</label>
       <input
         type="text"
         name="author"
@@ -13,7 +13,7 @@
         placeholder="Author Name"
         v-model="author"
       />
-      <label for="title" class="title">Title of Book</label>
+      <label for="title" class="form-title">Title of Book</label>
       <input
         type="text"
         name="title"
@@ -22,7 +22,7 @@
         placeholder="Title of Book"
         v-model="title"
       />
-      <label for="page-number" class="pages">Number of Pages</label>
+      <label for="page-number" class="form-pages">Number of Pages</label>
       <input
         type="number"
         name="pages"
@@ -31,7 +31,7 @@
         placeholder="0"
         v-model="pageNumber"
       />
-      <label for="have-read" class="book-read">I have read this book</label>
+      <label for="have-read" class="form-book-read">I have read this book</label>
       <input
         type="checkbox"
         name="read"
@@ -62,10 +62,7 @@ export default {
     addToLibrary() {
       if (this.isAcceptedInput()) {
         let library = this.getLibrary();
-        localStorage.setItem(
-          "library",
-          JSON.stringify(library)
-        );
+        localStorage.setItem("library", JSON.stringify(library));
         this.$emit("update:visible", false);
       }
     },
@@ -126,16 +123,5 @@ form {
     align-self: center;
     margin-bottom: 15px;
   }
-}
-.error-msg {
-  color: red;
-}
-.author {
-}
-.title {
-}
-.pages {
-}
-.book-read {
 }
 </style>

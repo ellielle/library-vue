@@ -13,7 +13,10 @@
     <hr />
     <button @click="toggleNewForm" v-if="!visible">Add New Book</button>
     <div>
-      <library-new-data v-if="visible" :visible.sync="visible"></library-new-data>
+      <library-new-data
+        v-if="visible"
+        :visible.sync="visible"
+      ></library-new-data>
     </div>
     <library-list v-if="!visible" :library="library"></library-list>
   </div>
@@ -55,18 +58,12 @@ export default {
       }
     },
     loadLibraryFromStorage() {
-      return JSON.parse(localStorage.getItem('library'));
-    }
-  },
-  watch: {
-    library() {
-      // TODO
-      // TODO may not be updating because i might not be updating library, just localstorage
+      return JSON.parse(localStorage.getItem("library"));
     }
   },
   components: {
     "library-new-data": LibraryNewData,
-    "library-list": LibraryList,
+    "library-list": LibraryList
   }
 };
 </script>
