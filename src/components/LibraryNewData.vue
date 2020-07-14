@@ -31,7 +31,9 @@
         placeholder="0"
         v-model="pageNumber"
       />
-      <label for="have-read" class="form-book-read">I have read this book</label>
+      <label for="have-read" class="form-book-read"
+        >I have read this book</label
+      >
       <input
         type="checkbox"
         name="read"
@@ -40,12 +42,14 @@
         v-model="haveRead"
       />
       <button @click.prevent="addToLibrary">Add Book</button>
-      <button @click.prevent="cancelNewBook">Cancel</button>
+      <button @click.prevent="closeForm">Cancel</button>
     </form>
   </div>
 </template>
 
 <script>
+import { eventBus } from "../main";
+
 export default {
   name: "LibraryData",
   data() {
@@ -62,19 +66,20 @@ export default {
     addToLibrary() {
       if (this.isAcceptedInput()) {
         let library = this.getLibrary();
-        localStorage.setItem("library", JSON.stringify(library));
-        this.$emit("update:visible", false);
+        eventBus.$emit("addToLibrary", library);
+        this.closeForm();
       }
     },
+    closeForm() {
+      eventBus.$emit("formVisible", "library-data");
+    },
     getLibrary() {
-      let tempLibrary = JSON.parse(localStorage.getItem("library")) || [];
-      tempLibrary.unshift({
+      return {
         author: this.author,
         title: this.title,
         pages: this.pageNumber,
         read: this.haveRead
-      });
-      return tempLibrary;
+      };
     },
     isAcceptedInput() {
       if (this.author === "" || this.title === "") {
@@ -91,9 +96,6 @@ export default {
     setError(message) {
       this.isError = true;
       this.error = message;
-    },
-    cancelNewBook() {
-      this.$emit("update:visible", false);
     }
   }
 };
@@ -123,5 +125,8 @@ form {
     align-self: center;
     margin-bottom: 15px;
   }
+}
+.error-msg {
+  color: red;
 }
 </style>
