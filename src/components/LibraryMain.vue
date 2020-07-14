@@ -11,7 +11,7 @@
       placeholder="Enter a new title"
       v-if="titleCanBeChanged"
       @keypress.enter="setNewTitle"
-      @keydown.delete.esc="cancelTitle"
+      @keydown.esc="cancelTitle"
     />
     <hr />
     <button @click="toggleNewForm">Add New Book</button>
