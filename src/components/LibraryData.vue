@@ -45,7 +45,7 @@ export default {
     editBook(bookTitle) {
       // TODO emit to formVisible
       // TODO look at refactoring new-data template to work with new and edit
-      eventBus.$emit("formVisible", bookTitle);
+      eventBus.$emit("formVisible", 'library-edit-data', bookTitle);
     },
     toggleRead(bookTitle) {
       let index = this.library.findIndex(

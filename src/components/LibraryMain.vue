@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import LibraryNewData from "./LibraryNewData.vue";
+import LibraryNewData from "./LibraryNewData";
 import LibraryData from "./LibraryData";
+import LibraryEditData from "./LibraryEditData";
 import { eventBus } from "../main";
 
 export default {
@@ -45,8 +46,9 @@ export default {
       ? localStorage.getItem("libraryTitle")
       : "My Library";
     this.library = this.loadLibraryFromStorage();
-    eventBus.$on("formVisible", newVisibleComponent => {
+    eventBus.$on("formVisible", (newVisibleComponent, formData = false) => {
       this.visibleComponent = newVisibleComponent;
+      console.log(formData);
     });
     eventBus.$on("addToLibrary", newEntry => {
       this.library.unshift(newEntry);
@@ -74,7 +76,7 @@ export default {
       if (this.visibleComponent === "library-data") {
         return this.library;
       } else {
-        return {};
+        return false;
       }
     }
   },
@@ -130,7 +132,8 @@ export default {
   },
   components: {
     "library-new-data": LibraryNewData,
-    "library-data": LibraryData
+    "library-data": LibraryData,
+    "library-edit-data": LibraryEditData
   }
 };
 </script>
