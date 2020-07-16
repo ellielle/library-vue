@@ -31,9 +31,9 @@
         placeholder="0"
         v-model="pageNumber"
       />
-      <label for="have-read" class="form-book-read"
-        >I have read this book</label
-      >
+      <label for="have-read" class="form-book-read">
+        I have read this book
+      </label>
       <input
         type="checkbox"
         name="read"
