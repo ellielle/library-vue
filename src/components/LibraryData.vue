@@ -43,16 +43,14 @@ export default {
       eventBus.$emit("removeBookFromLibrary", bookTitle);
     },
     editBook(bookTitle) {
-      // TODO emit to formVisible
-      // TODO look at refactoring new-data template to work with new and edit
-      eventBus.$emit("formVisible", 'library-edit-data', bookTitle);
+      eventBus.$emit("updateForm", bookTitle);
     },
     toggleRead(bookTitle) {
       let index = this.library.findIndex(
         removedBook => removedBook.title === bookTitle
       );
       this.library[index].read = !this.library[index].read;
-      eventBus.$emit("updateBook", bookTitle, this.library[index])
+      eventBus.$emit("updateBook", bookTitle, this.library[index]);
     }
   }
 };

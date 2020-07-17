@@ -19,15 +19,24 @@
       @keydown.esc="cancelTitle"
     />
     <hr />
-    <button @click="toggleNewForm">Add New Book</button>
-    <component :is="visibleComponent" :library="boundData"></component>
+    <!--  Only show New Book button if the new book form isn't open  -->
+    <button
+      @click="toggleNewForm"
+      v-if="visibleComponent !== 'library-new-data'"
+    >
+      Add New Book
+    </button>
+    <component
+      :is="visibleComponent"
+      :library="library"
+      :index="bookIndex"
+    ></component>
   </div>
 </template>
 
 <script>
 import LibraryNewData from "./LibraryNewData";
 import LibraryData from "./LibraryData";
-import LibraryEditData from "./LibraryEditData";
 import { eventBus } from "../main";
 
 export default {
@@ -38,7 +47,8 @@ export default {
       titleCanBeChanged: false,
       libraryTitle: "",
       library: [],
-      visibleComponent: "library-data"
+      visibleComponent: "library-data",
+      bookIndex: -1
     };
   },
   created() {
@@ -46,23 +56,28 @@ export default {
       ? localStorage.getItem("libraryTitle")
       : "My Library";
     this.library = this.loadLibraryFromStorage();
-    eventBus.$on("formVisible", (newVisibleComponent, formData = false) => {
+    eventBus.$on("formVisible", newVisibleComponent => {
       this.visibleComponent = newVisibleComponent;
-      console.log(formData);
     });
     eventBus.$on("addToLibrary", newEntry => {
       this.library.unshift(newEntry);
       this.updateSavedLibrary();
     });
     eventBus.$on("removeBookFromLibrary", bookTitle => {
-      let bookIndex = this.findBookIndex(bookTitle);
-      this.library.splice(bookIndex, 1);
-      console.log(bookTitle, bookIndex);
+      let removeBookIndex = this.findBookIndex(bookTitle);
+      this.library.splice(removeBookIndex, 1);
       this.updateSavedLibrary();
     });
     eventBus.$on("updateBook", (bookTitle, updateData) => {
-      let bookIndex = this.findBookIndex(bookTitle);
-      this.library[bookIndex] = updateData;
+      let updateBookIndex = this.findBookIndex(bookTitle);
+      this.library[updateBookIndex] = updateData;
+      this.updateSavedLibrary();
+    });
+    eventBus.$on("updateForm", bookTitle => {
+      this.bookIndex = this.findBookIndex(bookTitle);
+      this.toggleNewForm();
+    });
+    eventBus.$on("updateBook", () => {
       this.updateSavedLibrary();
     });
   },
@@ -71,15 +86,6 @@ export default {
     eventBus.$off("addToLibrary");
     eventBus.$off("removeBookFromLibrary");
   },
-  computed: {
-    boundData() {
-      if (this.visibleComponent === "library-data") {
-        return this.library;
-      } else {
-        return false;
-      }
-    }
-  },
   methods: {
     toggleNewForm() {
       this.visibleComponent = "library-new-data";
@@ -87,6 +93,7 @@ export default {
     changeTitle() {
       if (this.visibleComponent === "library-data") {
         this.titleCanBeChanged = !this.titleCanBeChanged;
+        // Wait for the DOM to update and change focus to the title change box
         this.$nextTick(() => {
           this.$refs.title.focus();
         });
@@ -132,8 +139,7 @@ export default {
   },
   components: {
     "library-new-data": LibraryNewData,
-    "library-data": LibraryData,
-    "library-edit-data": LibraryEditData
+    "library-data": LibraryData
   }
 };
 </script>
@@ -142,6 +148,7 @@ export default {
   margin: auto 300px;
   &:hover {
     cursor: pointer;
+    /* For funsies */
     background: linear-gradient(90deg, #ff8a00, #e52e71);
     background-clip: text;
     -webkit-text-fill-color: transparent;
