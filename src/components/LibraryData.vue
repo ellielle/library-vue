@@ -122,6 +122,7 @@ export default {
 }
 .btn-delete {
   border: 1px red solid;
+  border-radius: 2px;
   color: red;
   &:hover {
     background-color: red;
