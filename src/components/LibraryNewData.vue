@@ -153,9 +153,15 @@ form {
     width: 150px;
     align-self: center;
     margin-bottom: 15px;
+    cursor: pointer;
   }
 }
 .error-msg {
   color: red;
+}
+input[type="checkbox"] {
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>

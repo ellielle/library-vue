@@ -146,6 +146,7 @@ export default {
 <style lang="scss" scoped>
 #library-title {
   margin: auto 300px;
+  transition: 250ms ease-in-out;
   &:hover {
     cursor: pointer;
     /* For funsies */
@@ -157,5 +158,10 @@ export default {
 svg {
   fill: #808080;
   margin-right: 0;
+}
+button {
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
