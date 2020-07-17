@@ -9,7 +9,7 @@ import LibraryMain from "./components/LibraryMain.vue";
 export default {
   name: "App",
   components: {
-    'library-main': LibraryMain
+    "library-main": LibraryMain
   }
 };
 </script>
@@ -25,5 +25,8 @@ export default {
 }
 body {
   background-color: #2c3e50;
+}
+hr {
+  color: #212e3c;
 }
 </style>
